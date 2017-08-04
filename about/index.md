@@ -3,12 +3,14 @@ layout: page
 title: About
 class: 'post'
 navigation: True
-logo: 'assets/images/ghost.png'
+logo: 'assets/images/lbpm_dark_logo.png'
 current: about
 ---
 
-This is a demo blog for Ghost, it contains dummy content which allows you to click around and see what a Ghost blog running the default theme looks like.
+Learning BPM is a collection of my thoughts, learnings and related stuff as I help businesses implement ProcessMaker Workflow and BPM solution.
 
-We use this for testing and for reference!
+BPM stands for Business Process Management and often refers to both the methodology and the technology. For the purpose of this blog, we will more often than not be referring to the technology and [ProcessMaker](https://www.processmaker.com/) in particular.
 
-If you'd like to set up your own blog, head on over to [https://ghost.org](https://ghost.org) and sign up.
+Interested in learning more about the methodology, you can check out this article on AIIM - [What is BPM?](http://www.aiim.org/What-is-BPM).
+
+As you read, I would really appreciate your feedback in the comments so I can learn from your experiences also. Cheers!!!

@@ -473,6 +473,7 @@ margin on the iframe, cause it breaks stuff. */
 .vertical {
     display: table-cell;
     vertical-align: middle;
+    background: rgba(0,0,0,0.6);
 }
 
 /* Wraps the main content & footer */

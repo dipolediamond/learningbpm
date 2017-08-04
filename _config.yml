@@ -7,62 +7,29 @@ paginate: 5
 language: 'en-uk'
 
 # Website info
-name: 'Finding The Way Home'
-description: "A beautiful narrative written with the world's most elegant publishing platform. The story begins here."
+name: 'Learning BPM'
+description: "A collection of articles, tutorials, how-to guides, useful resources and more from my experience learning and implementing ProcessMaker Workflow and BPM solutions."
 
 # Author's info
-author: 'Casper McFadden'
+author: "'dipo Majekodunmi"
 # edit 'categories' in the front matter of every post to match this username
-nickname: casper
-bio: 'A paranormal expert and his daughter bunk in an abandoned house populated by 3 mischievous ghosts and one friendly one.'
-location: 'Maine, USA'
-url: 'http://biomadeira.github.io/jasper/'
-image: 'assets/images/casper.png'
+nickname: dipole
+bio: 'A technology generalist and ProcessMaker specialist. I love to learn about new technologies and figuring out how they can solve business problems.'
+location: 'Lagos, Nigeria'
+url: 'https://twitter.com/dipomajekodunmi'
+image: 'assets/images/dipo.jpeg'
 
-short_url: 'biomadeira.github.io/jasper/'
-google_analytics: UA-69281367-1
-disqus: username
+short_url: 'twitter.com/dipomajekodunmi/'
+google_analytics: UA-11807540-19
+disqus: learningbpm
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
-baseurl: /jasper/
+baseurl: /
 
 # Permalinks
 permalink: /:title
-# permalink: /author/:username
-# permalink: /tag/:tag
-
 
 # gems and other configs
-gems: [jekyll-paginate]
-exclude: [vendor]
-
-# Additional settings available on the front-matter
-# Site logo in the index.html (as in demo.ghost.io)
-# Author's page cover in _layouts/author.html
-# The same for page.html and tag.html layouts
-# Post's page cover as a per-post basis _posts/...
-# Disqus comments as a per-post basis
-# ...
-
-
-# Settings for builing master branch with travis-ci
-# with jekyll-travis
-
-# Settings for deploy rake task
-# Username and repo of Github repo, e.g.
-# https://github.com/USERNAME/REPO.git
-# username defaults to ENV['GIT_NAME'] used by Travis
-# repo defaults to USERNAME.github.io
-# Branch defaults to "source" for USERNAME.github.io
-# or "master" otherwise
-safe: false
-lsi: false
-username: biomadeira
-repo: jasper
-branch: master
-relative_source: ../jasper/
-destination: ../jasper-pages/
-production_url:  https://biomadeira.github.io/jasper/
-source_url:      https://github.com/biomadeira/jasper/
+gems: [jekyll-paginate, jekyll-sitemap]
 
 exclude:
   - README.md
@@ -73,3 +40,4 @@ exclude:
   - "*.Rmd"
   - vendor
   - .travis.yml
+  - zopfli
