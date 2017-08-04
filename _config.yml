@@ -29,7 +29,7 @@ baseurl: /
 permalink: /:title
 
 # gems and other configs
-gems: [jekyll-paginate, jekyll-sitemap]
+gems: [html-proofer, jekyll-paginate, jekyll-sitemap]
 
 exclude:
   - README.md

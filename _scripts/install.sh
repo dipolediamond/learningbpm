@@ -8,7 +8,8 @@ chmod 600 lbpm-deploy
 mv lbpm-deploy ~/.ssh/id_rsa
     
 # Install zopfli
-git clone https://code.google.com/p/zopfli/
+echo "Installing zopfli"
+git clone https://github.com/google/zopfli.git
 cd zopfli
 make
 chmod +x zopfli
