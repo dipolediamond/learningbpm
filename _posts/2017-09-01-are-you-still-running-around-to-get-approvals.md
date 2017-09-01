@@ -2,12 +2,13 @@
 layout: post
 title: Are you still running around to get approvals?
 subtitle: How ProcessMaker can help improve the efficiency of your employees
-tags: processmaker business-improvement
+tags: [ ProcessMaker, Business Improvement, Management ]
 subclass: 'post tag-content'
 categories: 'dipole'
 navigation: True
 logo: 'assets/images/lbpm_dark_logo.png'
 disqus: true
+date:   2017-09-01 20:37:01 +0100
 ---
 
 The testimonial below recently posted on the [ProcessMaker website](http://www.processmaker.com/) succinctly captures one of the primary benefits of using a Business Process Management solution for your business.
@@ -31,3 +32,5 @@ The approver also logs in to the system, reviews the form and approves or reject
 It even gets better. For employees and approvers on the go, ProcessMaker comes with mobile apps for both iOS and Android allowing your employees get work done on the go. The mobile apps also come with push notifications, so they are notified instantly when a task requires their attention.
 
 This is just one benefit of automating your forms-based approval workflows. You save your employees valuable time, making them more productive and efficient. And that time spent running around to get approvals can be used to create more value for your business and ultimately more profits — after all, the business of business is to make money.
+
+*This post first appeared on [Medium](https://medium.com/dipolediamond/are-you-still-running-around-to-get-approvals-a93ce6d4097d) on December 16, 2016.*

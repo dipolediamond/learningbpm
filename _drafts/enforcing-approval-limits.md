@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Enforcing Approval Limits in ProcessMaker
-tags: processmaker how-to
+tags: [ProcessMaker, How to Guide] 
 subclass: 'post tag-content'
 categories: 'dipole'
 navigation: True
