@@ -355,7 +355,7 @@ pre {
     width: 100%;
     padding: 10px;
     font-family: Inconsolata, monospace, sans-serif;
-    font-size: 0.9em;
+    font-size: 0.8em;
     white-space: pre;
     overflow: auto;
     background: #F7FAFB;
@@ -393,6 +393,7 @@ table {
     width: 100%;
     max-width: 100%;
     background-color: transparent;
+    font-size: 80%;
 }
 
 table th,
@@ -962,7 +963,7 @@ body:not(.post-template) .post-title {
 
 .post-meta {
     display: block;
-    margin: 1.75rem 0 0 0;
+    margin: 1.75rem 0;
     font-family: "Open Sans", sans-serif;
     font-size: 1.5rem;
     line-height: 2.2rem;
@@ -1121,7 +1122,7 @@ body:not(.post-template) .post-title {
 /* The author credit area after the post */
 .post-footer {
     position: relative;
-    margin: 6rem 0 0 0;
+    margin: 10rem 0 0 0;
     padding: 6rem 0 0 0;
     border-top: #EBF2F6 1px solid;
 }
