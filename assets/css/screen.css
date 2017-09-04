@@ -714,6 +714,37 @@ body.nav-opened .nav {
     margin-right: 6px;
 }
 
+/*Newsletter*/
+form.newsletter {
+    padding: 30px;
+    color: #b5b5b5;
+    font-size: 0.8em;
+}
+form.newsletter h3 {
+    font-size: 16px;
+    font-weight: 100;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+form.newsletter input#tlemail {
+    width: 100%;
+    border: none;
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    display: block;
+}
+.newsletter .subscribe-button {
+    position: relative;
+    border: none;
+    bottom: auto;
+    left: auto;
+    right: auto;
+    width: 100%;
+}
 
 /* Create a bouncing scroll-down arrow on homepage with cover image */
 .scroll-down {

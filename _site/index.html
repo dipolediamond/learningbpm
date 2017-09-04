@@ -76,7 +76,19 @@
         <li class="nav-fiction " role="presentation"><a href="/tag/fiction">Fiction</a></li>
         --><li class="nav-author " role="presentation"><a href="/author/dipole">Author</a></li>
     </ul>
-    <a class="subscribe-button icon-feed" href="/feed.xml">Subscribe</a>
+
+    
+    <form class="newsletter"  
+        action="https://tinyletter.com/learningbpm" method="post" target="popupwindow" 
+        onsubmit="window.open('https://tinyletter.com/learningbpm', 'popupwindow', 'scrollbars=yes,width=800,height=600');return true">
+        <h3>Newsletter</h3>
+        <label for="tlemail">Enter your email address</label>
+        <input type="text" name="email" id="tlemail" />
+        <input type="hidden" value="1" name="embed"/>
+        <input class="subscribe-button icon-envelope" type="submit" value="Subscribe" />
+    </form>
+    
+    <a class="subscribe-button icon-feed" href="/feed.xml">RSS Feed</a>
 </div>
 <span class="nav-cover"></span>
 
