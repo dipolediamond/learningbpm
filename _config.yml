@@ -24,6 +24,7 @@ google_analytics: UA-11807540-19
 disqus: learningbpm
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
 baseurl: /
+liveurl: 'https://learningbpm.com/'
 
 # Permalinks
 permalink: /:title
