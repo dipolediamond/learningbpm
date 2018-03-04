@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+   
+      <title>twitter.com/dipomajekodunmi/</title>
+   
+   <link>https://twitter.com/dipomajekodunmi</link>
+   <description>A collection of articles, tutorials, how-to guides, useful resources and more from my experience learning and implementing ProcessMaker Workflow and BPM solutions.</description>
+   <language>en-uk</language>
+   <managingEditor> 'dipo Majekodunmi</managingEditor>
+   <atom:link href="rss" rel="self" type="application/rss+xml" />
+   
+	<item>
+	  <title>Currency Dropdown Fields in ProcessMaker</title>
+	  <link>//currency-dropdown-fields</link>
+	  <author>'dipo Majekodunmi</author>
+	  <pubDate>2017-09-03T22:31:01+01:00</pubDate>
+	  <guid>//currency-dropdown-fields</guid>
+	  <description><![CDATA[
+	     <p>While building a process recently, there was a requirement to add a currency dropdown for users to select the currency for amount fields. The simple solution will be to add a dropdown field (e.g. <code class="highlighter-rouge">amount_1_cur</code>) to the form linked to a variable with options for a list of currencies and another field (e.g. <code class="highlighter-rouge">amount_1</code>) for the amount as shown in the image below.</p>
+
+<p><img src="/assets/images/posts/currency-dropdown-fields/currency_dropdown_demo_1.png" alt="Separate Dropdown field Example" /></p>
+
+<h4 id="additional-requirements">Additional requirements</h4>
+<p>In this case, the form had about ten amount fields that had to have their own currency selectors. In addition, there were also other requirements, such as</p>
+
+<ol>
+  <li>Ability to easily add new currencies to the process in the future</li>
+  <li>The currencies would be classified into local and foreign currencies with some amount fields using only foreign currencies and others using all currencies</li>
+  <li>The dropdown list had to be displayed in a certain order</li>
+</ol>
+
+<p>With these requirements, it is obvious that the initial solution will not be easy to maintain. Adding a new currency will involve updating all the variables in the different forms that use them. Also since the “key” column in the list of options for the variable is set to the ISO code for the currency, we will not be able to enforce the sort order.</p>
+
+<h4 id="an-alternate-solution">An alternate solution</h4>
+<p>To meet the requirements identified above and make it easy to maintain, we will use the following ProcessMaker features</p>
+
+<ol>
+  <li><strong>PM Tables</strong> - Create a table to store the different currencies with additional columns for classification and sorting</li>
+  <li><strong><a href="http://wiki.processmaker.com/3.2/DynaForm_Field_Properties#Array_Variable" target="_blank">Dropdown with Array variable</a></strong> - Set the dropdown fields to use an array variable as the data source</li>
+  <li><strong>Trigger</strong> - Update the array variable with the list of currencies in the right order using a trigger when a new case is started.</li>
+</ol>
+
+<h4 id="create-the-currency-pm-table">Create the Currency PM Table</h4>
+<p>First, create a PM table named CURRENCY with the following columns. You can also follow along by dowloading the PM table using the link below the tables and importing it into ProcessMaker.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field Name</th>
+      <th>Type</th>
+      <th>Size</th>
+      <th>Null</th>
+      <th>Primary Key</th>
+      <th>Auto Increment</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CODE</td>
+      <td>VARCHAR</td>
+      <td>5</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>ISO code for the currency e.g. USD</td>
+    </tr>
+    <tr>
+      <td>LABEL</td>
+      <td>VARCHAR</td>
+      <td>50</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>The display name for the currency e.g. US Dollar</td>
+    </tr>
+    <tr>
+      <td>SYMBOL</td>
+      <td>VARCHAR</td>
+      <td>5</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+      <td>The currency symbol e.g. $</td>
+    </tr>
+    <tr>
+      <td>CATEGORY</td>
+      <td>BIGINT</td>
+      <td>2</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Indicates if the currency is local or foreign (I use 1 for local and 2 for foreign)</td>
+    </tr>
+    <tr>
+      <td>WEIGHT</td>
+      <td>BIGINT</td>
+      <td>11</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Used to set the sort order for the currencies</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Once the table is created, add the following records.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>CODE</th>
+      <th>LABEL</th>
+      <th>SYMBOL</th>
+      <th>CATEGORY</th>
+      <th>WEIGHT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NGN</td>
+      <td>Naira</td>
+      <td>₦</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>USD</td>
+      <td>US Dollar</td>
+      <td>$</td>
+      <td>2</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>EUR</td>
+      <td>Euro</td>
+      <td>€</td>
+      <td>2</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <td>GBP</td>
+      <td>British Pounds</td>
+      <td>£</td>
+      <td>2</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>ZAR</td>
+      <td>South African Rand</td>
+      <td>R</td>
+      <td>2</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <td>JPY</td>
+      <td>Japanese Yen</td>
+      <td>¥</td>
+      <td>2</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>CAD</td>
+      <td>Canadian Dollar</td>
+      <td>$</td>
+      <td>2</td>
+      <td>7</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><em><a href="/assets/files/currency.pmt">Download the CURRENCY PM table</a></em></p>
+
+<h4 id="setup-the-array-variable">Setup the array variable</h4>
+<p>With our PM table in place, the next step is to create the variables that will hold the currencies. In the process, create two  new variables <code class="highlighter-rouge">all_currencies</code> and <code class="highlighter-rouge">foreign_currencies</code> with Variable type set to array.</p>
+
+<h4 id="create-a-trigger">Create a trigger</h4>
+<p>Next create a trigger named <strong>SetCurrencies</strong> with the following code</p>
+
+<figure class="highlight"><pre><code class="language-php" data-lang="php">@=all_currencies = array();
+@=foreign_currencies = array();
+$result = executeQuery("SELECT CODE, concat(CODE, '(', SYMBOL, ')') SYMBOL, CATEGORY FROM PMT_CURRENCY ORDER BY WEIGHT");
+if (is_array($result)) {
+  foreach ($result as $row) {
+    @=all_currencies[] = array($row['CODE'], $row['SYMBOL']);
+	if($row['CATEGORY'] == 2){
+		@=foreign_currencies[] = array($row['CODE'], $row['SYMBOL']);
+	}
+  }
+}</code></pre></figure>
+
+<h4 id="add-currency-fields-to-the-form">Add currency fields to the form</h4>
+<p>With the preparatory work done, we can now proceed to add multiple currency fields to our dynaforms. For the purpose of this tutorial, we will add two new amount fields <code class="highlighter-rouge">amount_2</code> (linked to all currencies) and <code class="highlighter-rouge">amount_3</code> (linked to foreign currencies) to our dynaform.</p>
+
+<p><a href="http://wiki.processmaker.com/3.0/Row_Control#Col-Span" target="_blank">Split the row into 2 columns</a> and on the left column, add a dropdown control linked to a variable <code class="highlighter-rouge">amount_2_cur</code>. In the control properties, set the datasource property to <strong>array variable</strong> and then click the @@ button to set the data variable property to <strong>@@all_currencies</strong> as shown in the image below. Add a textbox control in the right column linked to the <code class="highlighter-rouge">amount_2</code> variable.</p>
+
+<p><img src="/assets/images/posts/currency-dropdown-fields/currency_dropdown_demo_2.png" alt="Set the data source to array variable" /></p>
+
+<p>Repeat the steps above to another row with the dropdown control on the left linked to the <code class="highlighter-rouge">amount_3_cur</code> variable and the data varable property set to <strong>@@foreign_currencies</strong>. Add a textbox on the right linked to <code class="highlighter-rouge">amount_3</code> variable. Save and preview the form.</p>
+
+<h4 id="setup-the-task-and-preview">Setup the task and preview</h4>
+<p>To see how all this works, add a task to the process with a start and end event as shown below. Assign the dynaform containing our currency fields as a step in the task and set the <strong>SetCurrencies</strong> trigger to execute <strong>BEFORE</strong> the form. Assign a user to the task so we can test it out.</p>
+
+<p><img src="/assets/images/posts/currency-dropdown-fields/currency_dropdown_demo_3.png" alt="Sample task" /></p>
+
+<p>Start a new case as the assigned user and our currency dropdown field should load as displayed below. We can see that Amount 2 field includes Naira, while Amount 3 does not. Also the currencies are listed in the order specified.</p>
+
+<p><img src="/assets/images/posts/currency-dropdown-fields/currency_dropdown_demo_4.png" alt="Preview the dynaform" /></p>
+
+<h4 id="improving-the-user-experience">Improving the user experience</h4>
+<p>While we have addressed the requirements, we can make the user experience better by placing the currency dropdowns directly beside the corresponding fields and having them share the same label. To do that, we’ll use some JavaScript to tweak the form.</p>
+
+<p>First we change the columns for the currency rows from 2 to 4 (set the col-span property of the row to “3 3 3 3”) and place all the fields in the same row. Also remove the currency suffix in the labels of the dropdown fields. Add the JavaScript below to the form and save it.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addCurrencyDropdown</span><span class="p">(</span><span class="nx">ctrlId</span><span class="p">){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">" &gt; div.col-sm-3"</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">" &gt; div.col-sm-9"</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"col-sm-9 col-md-9 col-lg-9"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"col-sm-12"</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">"_cur &gt; div.col-sm-3"</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"col-sm-3 col-md-3 col-lg-3"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"col-sm-8"</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">"_cur &gt; div.pmdynaform-field-control"</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"col-sm-9 col-md-9 col-lg-9"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"col-sm-4"</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">//Add currency dropdown to currency fields</span>
+<span class="nx">addCurrencyDropdown</span><span class="p">(</span><span class="s2">"amount_2"</span><span class="p">);</span>
+<span class="nx">addCurrencyDropdown</span><span class="p">(</span><span class="s2">"amount_3"</span><span class="p">);</span></code></pre></figure>
+
+<p>If using ProcessMaker 3.1, the code for the <code class="highlighter-rouge">addCurrencyDropdown</code> function above (ProcessMaker 3.2) should be changed to the code below as the col-spans of the fields are different.</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">addCurrencyDropdown</span><span class="p">(</span><span class="nx">ctrlId</span><span class="p">){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">" &gt; label.col-sm-5"</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">" &gt; div.col-sm-7"</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"col-sm-7 col-md-7 col-lg-7"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"col-sm-12"</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">"_cur &gt; label.col-sm-5"</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"col-sm-5 col-md-5 col-lg-5"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"col-sm-8"</span><span class="p">);</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s2">"#"</span><span class="o">+</span><span class="nx">ctrlId</span><span class="o">+</span><span class="s2">"_cur &gt; div.pmdynaform-field-control"</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s2">"col-sm-7 col-md-7 col-lg-7"</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s2">"col-sm-4"</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>The currency fields are now displayed as shown below.</p>
+
+<p><img src="/assets/images/posts/currency-dropdown-fields/currency_dropdown_demo_5.png" alt="Improved currency dropdown form" /></p>
+
+<p>And there you have it. A better looking currency dropdown field that we can readily add new currencies to and reuse multiple times on the form.</p>
+
+<p><em><a href="/assets/files/Currency_Dropdown_Demo-1.pmx">Download the sample process</a></em></p>
+
+	  ]]></description>
+	</item>
+
+	<item>
+	  <title>Are you still running around to get approvals?</title>
+	  <link>//are-you-still-running-around-to-get-approvals</link>
+	  <author>'dipo Majekodunmi</author>
+	  <pubDate>2017-09-01T20:37:01+01:00</pubDate>
+	  <guid>//are-you-still-running-around-to-get-approvals</guid>
+	  <description><![CDATA[
+	     <p>The testimonial below recently posted on the <a href="http://www.processmaker.com/">ProcessMaker website</a> succinctly captures one of the primary benefits of using a Business Process Management solution for your business.</p>
+
+<blockquote>
+  <p>“ProcessMaker has helped us improve the efficiency of our employees. Instead of running around to get approvals, we now have a software based process management.” ~ CEO, Renaissance Construction</p>
+</blockquote>
+
+<h4 id="your-employees-time-isvaluable">Your employees’ time is valuable</h4>
+
+<p>As every business owner or manager knows, your business is only as good as its people — your employees. And they do not come cheap. Employee wages and benefits make up a significant portion of the operating expense of your business and you would want to ensure you are getting the best value for your money.</p>
+
+<p>However, this is not always the case, as more often than not, employees spend valuable time running after supervisors and bosses to get approvals before they can get their work done. This can range from authorising an expense or releasing an item from inventory.</p>
+
+<p>These little minutes and sometimes hours spent tracking down a boss can quickly add up to significant amount of <strong>time spent being busy instead of productive</strong>. These wasted bits of time are even compounded when the “approver” is located in a different office or is away on a business trip. Forms are printed, scanned, emailed, printed, signed, scanned, emailed and then printed just to get a consent to get work done.</p>
+
+<h4 id="help-them-with-automation">Help them with automation</h4>
+
+<p>By adopting a Business Process Management solution like ProcessMaker, employees simply log in to the system and fill out the necessary form. Once submitted, the form is routed to the designated approver based on predefined business rules.</p>
+
+<p>The approver also logs in to the system, reviews the form and approves or rejects the request. If further clarification is required, the supervisor/manager and employee can add case notes to the form and have the other party notified via email. This eliminates sending the form back and forth.</p>
+
+<p>It even gets better. For employees and approvers on the go, ProcessMaker comes with mobile apps for both iOS and Android allowing your employees get work done on the go. The mobile apps also come with push notifications, so they are notified instantly when a task requires their attention.</p>
+
+<p>This is just one benefit of automating your forms-based approval workflows. You save your employees valuable time, making them more productive and efficient. And that time spent running around to get approvals can be used to create more value for your business and ultimately more profits — after all, the business of business is to make money.</p>
+
+<p><em>This post first appeared on <a href="https://medium.com/dipolediamond/are-you-still-running-around-to-get-approvals-a93ce6d4097d">Medium</a> on December 16, 2016.</em></p>
+
+	  ]]></description>
+	</item>
+
+
+</channel>
+</rss>

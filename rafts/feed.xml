@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Learning BPM - Articles</title>
+    <description>A collection of articles, tutorials, how-to guides, useful resources and more from my experience learning and implementing ProcessMaker Workflow and BPM solutions.</description>
+    <link>
+    https://twitter.com/dipomajekodunmi</link>
+    
+      
+      <item>
+        <title>Currency Dropdown Fields in ProcessMaker</title>
+        
+          <description>&lt;p&gt;While building a process recently, there was a requirement to add a currency dropdown for users to select the currency for amount fields. The simple solution will be to add a dropdown field (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;amount_1_cur&lt;/code&gt;) to the form linked to a variable with options for a list of currencies and another field (e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;amount_1&lt;/code&gt;) for the amount as shown in the image below.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Sun, 03 Sep 2017 22:31:01 +0100</pubDate>
+        <link>
+        https://twitter.com/dipomajekodunmi/currency-dropdown-fields</link>
+        <guid isPermaLink="true">https://twitter.com/dipomajekodunmi/currency-dropdown-fields</guid>
+      </item>
+      
+    
+      
+      <item>
+        <title>Are you still running around to get approvals?</title>
+        
+          <description>&lt;p&gt;The testimonial below recently posted on the &lt;a href=&quot;http://www.processmaker.com/&quot;&gt;ProcessMaker website&lt;/a&gt; succinctly captures one of the primary benefits of using a Business Process Management solution for your business.&lt;/p&gt;
+
+</description>
+        
+        <pubDate>Fri, 01 Sep 2017 20:37:01 +0100</pubDate>
+        <link>
+        https://twitter.com/dipomajekodunmi/are-you-still-running-around-to-get-approvals</link>
+        <guid isPermaLink="true">https://twitter.com/dipomajekodunmi/are-you-still-running-around-to-get-approvals</guid>
+      </item>
+      
+    
+  </channel>
+</rss>
