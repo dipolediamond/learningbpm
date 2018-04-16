@@ -25,6 +25,7 @@ disqus: learningbpm
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
 baseurl: /
 liveurl: 'https://learningbpm.com/'
+siteurl: 'https://www.learningbpm.com'
 
 # Permalinks
 permalink: /:title
